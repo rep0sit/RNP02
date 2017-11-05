@@ -51,6 +51,11 @@ public final class Commands {
 	 * show the conditions for the login
 	 */
 	public static final String CONDITIONS = "/conditions";
+	
+	/**
+	 * show a list of every usercommand
+	 */
+	public static final String SHOW_COMMANDS = "/showcommands";
 	/**
 	 * give server command to change to the following room
 	 */
@@ -59,6 +64,11 @@ public final class Commands {
 	 * whisper mode with following user
 	 */
 	public static final String WHISPER = "/whisper ";
+	
+	/**
+	 * talk to every user in the room
+	 */
+	public static final String UN_WHISPER = "/unwhisper";
 
 	/**
 	 * give a list of all active users
