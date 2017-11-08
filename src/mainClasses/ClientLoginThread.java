@@ -1,5 +1,9 @@
 package mainClasses;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
@@ -9,38 +13,118 @@ import utils.Constants;
 final class ClientLoginThread extends AbstractWriteThread {
 
 	
-	private List<String> userNames;
+	private List<UserThread> users;
 	
-	private String userName = "";
+	private String userName;
 	
-	public ClientLoginThread(Socket socket, List<String> userNames) {
+	public ClientLoginThread(Socket socket, List<UserThread> users) {
 		this.socket = socket;
-		this.userNames = userNames;
+		this.users = users;
 		this.setDaemon(true);
+		init();
 		start();
 	}
+	
 
-	private void login() {
-		if(userNames.size() == Constants.MAX_CLIENT_THREADS) {
-			write(Commands.SERVER_FULL);
+	private void init() {
+		try {
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			pw = new PrintWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else {
-			
-			write(Commands.GIVE_USERNAME);
-			
-			if(userNames.contains(userName)) {
-				write(Commands.USERNAME_TAKEN);
-			}
-			else if(!Helpers.validateName(userName)) {
-				write(Commands.INVALID_USERNAME);
-			}
-		}
-		
-
-
 		
 	}
+
+
+	private String askUserName() {
+		String ret = null;
+		String givenName = "";
+		boolean taken = false;
+		
+		boolean firstAttempt = true;
+		for(int i = 1; i <= Constants.MAX_NAME_ATTEMPTS; i++ ) {
+			
+			if(firstAttempt) {
+				write(Commands.GIVE_USERNAME);
+				firstAttempt = false;
+			}
+			
+			try {
+
+				givenName = br.readLine();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			for(UserThread u : users) {
+				if(u.getUserName().equals(givenName)) {
+					taken = true;
+				}
+			}
+			
+			if(taken) {
+				write(Commands.USERNAME_TAKEN);
+			}
+			else if(!Helpers.validateName(givenName)) {
+				write(Commands.INVALID_USERNAME + "Username must be between " + 
+						Constants.USERNAME_MIN_LEN + " and " + Constants.USERNAME_MAX_LEN + 
+						" characters long.");
+			}
+			else {
+				ret = givenName;
+				break;
+			}
+		}
+		
+		
+		return ret;
+	}
 	
+	
+	private void login() {
+
+		userName = askUserName();
+
+		if (userName == null) {
+			write(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
+					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
+			try {
+				socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} 
+		else {
+
+			if (users.size() >= Constants.MAX_CLIENT_THREADS) {
+				write(Commands.SERVER_FULL + "Sorry, Server is full now.");
+			} else {
+				write(Commands.VALID_USERNAME);
+				
+				
+				users.add(new UserThread(userName, socket, users));
+			
+				write(Commands.LOGGED_IN);
+				write("####################################################");
+				write("You are in the lobby now.");
+				write("Type in " + Commands.SHOW_COMMANDS + " for a list of all commands.");
+				write("Have fun and be nice.");
+				write("####################################################");
+				
+			}
+
+			
+		}
+
+	}
+	
+	@Override
 	public void run() {
 		login();
 	}

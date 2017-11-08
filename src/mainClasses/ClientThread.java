@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import gui.ClientGui;
 import utils.Commands;
 import utils.Constants;
 
@@ -24,6 +25,7 @@ public final class ClientThread extends AbstractClientServerThread {
 	private String name;
 	private InetAddress inetAddress;
 	
+	private ClientGui gui = null;
 	
 
 	// state
@@ -71,7 +73,9 @@ public final class ClientThread extends AbstractClientServerThread {
 	}
 	
 	
-	
+	public void setGui(ClientGui gui) {
+		this.gui = gui;
+	}
 	
 
 	/**
@@ -88,9 +92,9 @@ public final class ClientThread extends AbstractClientServerThread {
 	 */
 	private void selfMessageResponse(String command, String interpretation, String completeLine) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Command code: ").append(command);
+		sb.append("Server command: ").append(command);
 		if (!interpretation.equals("")) {
-			sb.append("(").append(interpretation).append(")");
+			sb.append("(Interpretation = ").append(interpretation).append(")");
 		}
 		if (completeLine.length() > command.length()) {
 			sb.append("[optional server message: ").append(completeLine.substring(command.length())).append("]");
@@ -113,8 +117,13 @@ public final class ClientThread extends AbstractClientServerThread {
 	}
 
 	
-	
-	
+	@Override
+	protected void selfMessage(String message) {
+		if(gui != null) {
+			gui.console(message);
+		}
+		super.selfMessage(message);
+	}
 	
 	
 	@Override
@@ -122,6 +131,7 @@ public final class ClientThread extends AbstractClientServerThread {
 		init();
 		String currentLine;
 		boolean invalidName = false;
+		System.out.println("ClientThread is running now.");
 		try {
 			while ((currentLine = br.readLine()) != null && !terminated) {
 				// server commands
@@ -130,15 +140,16 @@ public final class ClientThread extends AbstractClientServerThread {
 				}
 				
 				// forced state-alterating commands
-				else if(currentLine.startsWith(Commands.FORCE_USERNAME)) {
-					if(currentLine.length() > Commands.FORCE_USERNAME.length()) {
-						String userName = currentLine.substring(Commands.FORCE_USERNAME.length());
-						this.name = userName;
-						selfMessage("Username was changed to ", userName);
-					}
-				}
+//				else if(currentLine.startsWith(Commands.FORCE_USERNAME)) {
+//					if(currentLine.length() > Commands.FORCE_USERNAME.length()) {
+//						String userName = currentLine.substring(Commands.FORCE_USERNAME.length());
+//						this.name = userName;
+//						selfMessage("Username was changed to ", userName);
+//					}
+//				}
 				else if(currentLine.startsWith(Commands.FORCE_DISCONNECT)) {
-					selfMessage("You were kicked from server.");
+					//selfMessage("You were kicked from server.");
+					selfMessageResponse(Commands.FORCE_DISCONNECT, "kicked from server", currentLine);
 					terminate();
 					break;
 				}
@@ -154,6 +165,8 @@ public final class ClientThread extends AbstractClientServerThread {
 				} 
 				else if (currentLine.startsWith(Commands.SERVER_FULL)) {
 					selfMessageResponse(Commands.SERVER_FULL, "server already full", currentLine);
+					terminate();
+					break;
 				}
 
 				// positive server responses
@@ -163,7 +176,8 @@ public final class ClientThread extends AbstractClientServerThread {
 				}
 
 				else if (currentLine.startsWith(Commands.VALID_USERNAME)) {
-					selfMessageResponse(Commands.VALID_USERNAME, currentLine);
+					selfMessageResponse(Commands.VALID_USERNAME,"username was valid", currentLine);
+					invalidName = false;
 				} 
 				else if (currentLine.startsWith(Commands.IN_ROOM)) {
 					selfMessageResponse(Commands.IN_ROOM, currentLine);

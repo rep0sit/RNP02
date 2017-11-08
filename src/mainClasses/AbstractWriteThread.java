@@ -11,6 +11,9 @@ abstract class AbstractWriteThread extends Thread{
 	protected BufferedReader br;
 	protected Socket socket;
 	
+	
+	
+	
 	/**
 	 * writes a String message on outStream.
 	 * 

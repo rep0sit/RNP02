@@ -9,6 +9,8 @@ abstract class AbstractClientServerThread extends AbstractWriteThread {
 	protected int port;
 	
 	protected void selfMessage(String message) {
+		
+		// -> get message to gui
 		System.out.println(message);
 	}
 
@@ -23,6 +25,7 @@ abstract class AbstractClientServerThread extends AbstractWriteThread {
 	
 	public void terminate() {
 		terminated = true;
+		
 		try {
 	
 			br.close();
@@ -31,7 +34,7 @@ abstract class AbstractClientServerThread extends AbstractWriteThread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println(getClass().getSimpleName() + " closed.");
 		
 	}
 	

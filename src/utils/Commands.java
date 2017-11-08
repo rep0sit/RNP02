@@ -1,5 +1,9 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public final class Commands {
 	private Commands() {
 	}
@@ -15,8 +19,8 @@ public final class Commands {
 	
 	// SERVER COMMANDS THAT FORCE ALTERATION OF CLIENT (START WITH ">>>>");
 	
-	public static final String FORCE_USERNAME = FORCE + "600_";
-	public static final String FORCE_DISCONNECT = FORCE + "601";
+	//public static final String FORCE_USERNAME = FORCE + "600_";
+	public static final String FORCE_DISCONNECT = FORCE + "601_";
 	
 	// POSITIVE SERVER RESPONSES (START WITH ">>1")
 	/**
@@ -50,16 +54,16 @@ public final class Commands {
 	/**
 	 * show the conditions for the login
 	 */
-	public static final String CONDITIONS = "/conditions";
+	//public static final String CONDITIONS = "/conditions";
 	
 	/**
 	 * show a list of every usercommand
 	 */
-	public static final String SHOW_COMMANDS = "/showcommands";
+	public static final String SHOW_COMMANDS = "/commands";
 	/**
 	 * give server command to change to the following room
 	 */
-	public static final String GOTO_ROOM = "/gotoroom ";
+	public static final String GOTO_ROOM = "/goto ";
 	/**
 	 * whisper mode with following user
 	 */
@@ -79,8 +83,25 @@ public final class Commands {
 	 */
 	public static final String ROOMS = "/rooms";
 	
+	public static final String LOG = "/log";
+	
+	
+	// SERVER ADMIN BEFEHLE
+	public static final String STOP = "/stop";
+	
+	public static final String KICK_USER = "/kick_";
+	
+	public static final List<String> USER_COMMANDS = new ArrayList<>(Arrays.asList(
+			SHOW_COMMANDS + " (shows all commands)",
+			GOTO_ROOM + " <designated room> (go to designated room)",
+			WHISPER + " <user> (whisper to user)",
+			UN_WHISPER + " (talk to everyone in the room)",
+			USERS + " (shows all users in this room)",
+			ROOMS + " (shows all rooms)"));
+	
 	public static final boolean messageAllowed(String message) {
 		return !(message.startsWith(DEMAND) || message.startsWith(RESPONSE) || message.startsWith(FORCE));
 	}
 
+	
 }
