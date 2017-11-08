@@ -89,7 +89,7 @@ public final class Commands {
 	// SERVER ADMIN BEFEHLE
 	public static final String STOP = "/stop";
 	
-	public static final String KICK_USER = "/kick_";
+	public static final String KICK_USER = "/kick ";
 	
 	public static final List<String> USER_COMMANDS = new ArrayList<>(Arrays.asList(
 			SHOW_COMMANDS + " (shows all commands)",

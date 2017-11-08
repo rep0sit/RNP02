@@ -97,6 +97,7 @@ class UserThread extends AbstractWriteThread {
 			while(!kicked && (inc = br.readLine()) != null) {
 				
 				
+				
 				if(inc.equals(Commands.SHOW_COMMANDS)) {
 					super.write("USER COMMANDS: ");
 					writeList(Commands.USER_COMMANDS);
@@ -161,6 +162,7 @@ class UserThread extends AbstractWriteThread {
 					
 					
 					if(!whisper) {
+						ServerThread.addToLog(toWrite);
 						for(UserThread u : users) {
 							if(u.getRoom().equals(room)) {
 								
@@ -171,6 +173,7 @@ class UserThread extends AbstractWriteThread {
 					}
 					else {
 						toWrite = "[" + room + "] " + name + "(whispering): " + inc;
+						ServerThread.addToLog(toWrite);
 						whisperToUser.write(toWrite);
 						write(toWrite);
 					}
@@ -183,8 +186,16 @@ class UserThread extends AbstractWriteThread {
 				
 				
 			}
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			users.remove(this);
+			//e.printStackTrace();
 		}
 	}
 	

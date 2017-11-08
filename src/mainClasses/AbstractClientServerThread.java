@@ -10,8 +10,10 @@ abstract class AbstractClientServerThread extends AbstractWriteThread {
 	
 	protected void selfMessage(String message) {
 		
-		// -> get message to gui
-		System.out.println(message);
+		if(!message.equals("")) {
+			System.out.println(message);
+		}
+		
 	}
 
 	protected void selfMessage(String... messages) {

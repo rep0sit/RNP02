@@ -133,7 +133,7 @@ public final class ClientThread extends AbstractClientServerThread {
 		boolean invalidName = false;
 		System.out.println("ClientThread is running now.");
 		try {
-			while ((currentLine = br.readLine()) != null && !terminated) {
+			while (!terminated && (currentLine = br.readLine()) != null) {
 				// server commands
 				if (currentLine.equals(Commands.GIVE_USERNAME)) {
 					write(name);

@@ -22,6 +22,8 @@ abstract class AbstractWriteThread extends Thread{
 	 */
 	public void write(String message) {
 		
+		
+		
 		pw.write(message + "\n");
 		pw.flush();
 	}
