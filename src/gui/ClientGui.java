@@ -4,8 +4,12 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,10 +66,10 @@ public class ClientGui extends JFrame {
 		client.start();
 	}
 	
-	
-
-
-
+	private void closeClient() {
+		client.logout();
+		this.dispose();
+	}
 
 	private void createWindow(){
 		
@@ -77,7 +81,7 @@ public class ClientGui extends JFrame {
 		
 		
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); //.EXIT_ON_CLOSE);
 		//setLocationRelativeTo(null);
 		
 		Positionings.setWindowSizeAccordingToResolution(this);
@@ -172,6 +176,12 @@ public class ClientGui extends JFrame {
 		setVisible(true);
 		txtMessage.requestFocusInWindow();
 		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				closeClient();
+			}
+		});
 		
 	}
 	

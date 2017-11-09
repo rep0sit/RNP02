@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import utils.Commands;
 import utils.Constants;
 
@@ -25,11 +24,7 @@ public final class ServerThread extends AbstractClientServerThread{
 	//private List<String> userNames = new ArrayList<>();
 	private List<UserThread> users = new ArrayList<>();
 	
-	
-	
 	private ServerSocket serverSocket;
-	
-	
 	
 	public ServerThread(int port) {
 		this.port = port;
@@ -68,7 +63,7 @@ public final class ServerThread extends AbstractClientServerThread{
 	public void run() {
 		selfMessage("Server running on port ", Integer.toString(port));
 		new ConsoleReader();
-		while(!terminated) {
+		while(!closed) {
 			try {
 				socket = serverSocket.accept();
 				selfMessage("Login Attempt: ", "IP = ", socket.getInetAddress().toString());
@@ -80,10 +75,6 @@ public final class ServerThread extends AbstractClientServerThread{
 				}else {
 					new ClientLoginThread(socket, users);
 				}
-				
-				
-				
-			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

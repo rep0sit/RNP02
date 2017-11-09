@@ -4,7 +4,7 @@ import java.io.IOException;
 
 abstract class AbstractClientServerThread extends AbstractWriteThread {
 	
-	protected boolean terminated = false;
+	protected boolean closed = false;
 	
 	protected int port;
 	
@@ -25,13 +25,15 @@ abstract class AbstractClientServerThread extends AbstractWriteThread {
 	}
 	
 	
-	public void terminate() {
-		terminated = true;
+	public void close() {
+		closed = true;
 		
 		try {
-	
+			
 			br.close();
 			pw.close();
+			
+			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

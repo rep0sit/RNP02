@@ -123,11 +123,12 @@ public final class ClientThread extends AbstractClientServerThread {
 	@Override
 	public void run() {
 		init();
+		
 		String currentLine;
 		boolean invalidName = false;
 		System.out.println("ClientThread is running now.");
 		try {
-			while (!terminated && (currentLine = br.readLine()) != null) {
+			while (!closed && (currentLine = br.readLine()) != null) {
 				// server commands
 				if (currentLine.equals(Commands.GIVE_USERNAME)) {
 					write(name);
@@ -144,7 +145,7 @@ public final class ClientThread extends AbstractClientServerThread {
 				else if(currentLine.startsWith(Commands.FORCE_DISCONNECT)) {
 					//selfMessage("You were kicked from server.");
 					selfMessageResponse(Commands.FORCE_DISCONNECT, "kicked from server", currentLine);
-					terminate();
+					close();
 					break;
 				}
 
@@ -159,7 +160,7 @@ public final class ClientThread extends AbstractClientServerThread {
 				} 
 				else if (currentLine.startsWith(Commands.SERVER_FULL)) {
 					selfMessageResponse(Commands.SERVER_FULL, "server already full", currentLine);
-					terminate();
+					close();
 					break;
 				}
 
@@ -207,6 +208,11 @@ public final class ClientThread extends AbstractClientServerThread {
 		
 		
 		
+		
+	}
+
+	public void logout() {
+		// TODO Auto-generated method stub
 		
 	}
 
