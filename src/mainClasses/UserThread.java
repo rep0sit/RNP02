@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import gui.ServerGui;
 import utils.Commands;
 
 class UserThread extends AbstractWriteThread {
@@ -17,6 +18,8 @@ class UserThread extends AbstractWriteThread {
 	private List<String> log = new ArrayList<>();
 	private boolean kicked = false;
 	
+	private ServerGui serverGui;
+	
 	public UserThread(String name, Socket socket, List<UserThread> users) {
 		this.socket = socket;
 		this.name = name;
@@ -25,6 +28,11 @@ class UserThread extends AbstractWriteThread {
 		setDaemon(true);
 		init();
 		start();
+	}
+
+	public UserThread(String userName, Socket socket, List<UserThread> users2, ServerGui serverGui) {
+		this(userName, socket, users2);
+		this.serverGui = serverGui;
 	}
 
 	private void init() {
@@ -70,7 +78,7 @@ class UserThread extends AbstractWriteThread {
 			sb.append(s.toString());
 			i++;
 			if(i < list.size()) {
-				sb.append(", ");
+				sb.append("\n");
 			}
 		}
 		super.write(sb.toString());
@@ -110,6 +118,7 @@ class UserThread extends AbstractWriteThread {
 						super.write("You are in the room " + designatedRoom +" now.");
 						setRoom(designatedRoom);
 						whisper = false;
+						serverGui.writeToConsole("User "+this.name+" switched to room: "+designatedRoom);
 					}
 					else {
 						super.write("The room " + designatedRoom + " does not exist!");
@@ -153,7 +162,23 @@ class UserThread extends AbstractWriteThread {
 					writeList(log);
 					super.write("###########################################################");
 				}
-				
+				else if(inc.equals(Commands.QUIT)){
+//					kick();
+					//close socket and streams	
+					super.write("User: "+name+" quit session.");
+					users.remove(this);
+					String str = "User "+name+" left this room.";
+					//write to other users that user "name" left room
+					ServerThread.addToLog(str);
+					for(UserThread u : users) {
+						if(u.getRoom().equals(room)) {
+							
+							u.write(str);
+						}
+					}
+					serverGui.writeToConsole("User "+this.name+" left chat.");
+					quit();
+				}
 				// Write to every user in room
 				else if(inc != null && !inc.equals("") && Commands.messageAllowed(inc)) {
 					
@@ -198,6 +223,17 @@ class UserThread extends AbstractWriteThread {
 			//e.printStackTrace();
 		}
 	}
-	
-	
+
+	private void quit() {
+		try {
+			kicked = true;
+			write(Commands.FORCE_DISCONNECT);
+			br.close();
+			pw.close(); //wird hier gar nciht genutzt
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

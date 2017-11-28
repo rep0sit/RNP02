@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import utils.Commands;
+
 
 
 abstract class AbstractWriteThread extends Thread{
@@ -22,10 +24,9 @@ abstract class AbstractWriteThread extends Thread{
 	 */
 	public void write(String message) {
 		
-		
-		
 		pw.write(message + "\n");
 		pw.flush();
+		
 	}
 	
 	

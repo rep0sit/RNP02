@@ -151,6 +151,7 @@ public final class ClientThread extends AbstractClientServerThread {
 					//selfMessage("You were kicked from server.");
 					selfMessageResponse(Commands.FORCE_DISCONNECT, "kicked from server", currentLine);
 					terminate();
+					gui.dispose();
 					break;
 				}
 

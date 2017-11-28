@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 
 import javax.swing.JButton;
@@ -47,7 +49,7 @@ public class ClientGui extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ClientGui(String name, String address, int port) {
+public ClientGui(String name, String address, int port) {
 		setTitle("Client");
 		
 		this.name = name;
@@ -78,7 +80,17 @@ public class ClientGui extends JFrame {
 		
 		
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent windowEvent){
+
+				dispose();
+				client.terminate();
+				
+			}
+		});
 		//setLocationRelativeTo(null);
 		
 		Positionings.setWindowSizeAccordingToResolution(this);

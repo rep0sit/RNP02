@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import gui.ServerGui;
 import utils.Commands;
 import utils.Constants;
 
@@ -17,6 +18,8 @@ final class ClientLoginThread extends AbstractWriteThread {
 	
 	private String userName;
 	
+	private ServerGui serverGui;
+	
 	public ClientLoginThread(Socket socket, List<UserThread> users) {
 		this.socket = socket;
 		this.users = users;
@@ -25,6 +28,12 @@ final class ClientLoginThread extends AbstractWriteThread {
 		start();
 	}
 	
+
+	public ClientLoginThread(Socket socket, List<UserThread> users2, ServerGui serverGui) {
+		this(socket, users2);
+		this.serverGui = serverGui;
+	}
+
 
 	private void init() {
 		try {
@@ -93,6 +102,8 @@ final class ClientLoginThread extends AbstractWriteThread {
 		if (userName == null) {
 			write(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
 					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
+			serverGui.writeToConsole(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
+					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
 			try {
 				socket.close();
 			} catch (IOException e) {
@@ -108,8 +119,10 @@ final class ClientLoginThread extends AbstractWriteThread {
 				write(Commands.VALID_USERNAME);
 				
 				
-				users.add(new UserThread(userName, socket, users));
-			
+//				users.add(new UserThread(userName, socket, users));
+				users.add(new UserThread(userName, socket, users, serverGui));
+				serverGui.writeToConsole("User "+userName+" has joined the chat");
+				
 				write(Commands.LOGGED_IN);
 				write("####################################################");
 				write("You are in the lobby now.");

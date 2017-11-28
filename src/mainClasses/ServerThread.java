@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gui.ServerGui;
 import utils.Commands;
 import utils.Constants;
 
@@ -29,7 +30,7 @@ public final class ServerThread extends AbstractClientServerThread{
 	
 	private ServerSocket serverSocket;
 	
-	
+	private ServerGui serverGui;
 	
 	public ServerThread(int port) {
 		this.port = port;
@@ -42,12 +43,24 @@ public final class ServerThread extends AbstractClientServerThread{
 		}
 		
 	}
-	
+	public ServerThread(ServerGui gui){
+		this(Constants.SERVER_STANDARD_PORT);
+		serverGui = gui;
+		serverGui.writeToConsole("Server is running on port "+Constants.SERVER_STANDARD_PORT);
+	}
 	public ServerThread() {
 		this(Constants.SERVER_STANDARD_PORT);
 	}
 	
 	public void disconnect() {
+		try {
+			br.close();
+			serverSocket.close();
+			serverGui.dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.exit(-1);
 	}
 	
@@ -78,7 +91,8 @@ public final class ServerThread extends AbstractClientServerThread{
 					write(Commands.SERVER_FULL + "Sorry, Server is Full.");
 					pw.close();
 				}else {
-					new ClientLoginThread(socket, users);
+//					new ClientLoginThread(socket, users);
+					new ClientLoginThread(socket, users, serverGui);
 				}
 				
 				
@@ -117,7 +131,6 @@ public final class ServerThread extends AbstractClientServerThread{
 				try {
 					command = br.readLine();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if(command.equals(Commands.STOP)) {
@@ -130,6 +143,7 @@ public final class ServerThread extends AbstractClientServerThread{
 						if (u.getUserName().equals(user)) {
 							u.kick();
 							users.remove(u);
+							serverGui.writeToConsole("User "+u.getName()+" was kicked.");
 						}
 						
 					}
@@ -144,6 +158,9 @@ public final class ServerThread extends AbstractClientServerThread{
 						sb.append("[").append(u).append("]");
 					}
 					selfMessage(sb.toString());
+				}
+				else if(command.equals(Commands.QUIT)){
+					disconnect();
 				}
 			}
 		}
