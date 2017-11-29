@@ -80,6 +80,7 @@ public final class Commands {
 
 	/**
 	 * give a list of all active users
+	 * this is also a Server Admin Command
 	 */
 	public static final String USERS = "/users";
 	/**
@@ -88,7 +89,9 @@ public final class Commands {
 	public static final String ROOMS = "/rooms";
 	
 	public static final String ADD_ROOM = "/addroom ";
-	
+	/**
+	 * this is also a Server Admin Command
+	 */
 	public static final String LOG = "/log";
 	/**
 	 * quit the chat session and terminates all streams and socket connection

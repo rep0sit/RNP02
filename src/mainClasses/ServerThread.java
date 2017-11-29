@@ -175,7 +175,9 @@ public final class ServerThread extends AbstractClientServerThread{
 						if (u.getUserName().equals(user)) {
 							u.close();
 							users.remove(u);
-							serverGui.writeToConsole("User "+u.getName()+" was kicked.");
+							
+							
+							//serverGui.writeToConsole("User "+u.getName()+" was kicked.");
 						}
 						
 					}
