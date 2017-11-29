@@ -13,50 +13,52 @@ public final class Commands {
 //	private static final String RESPONSE = ">>"; // information from server
 //	private static final String FORCE = ">>>>"; // server forces alteration of client
 	
-	private static final String SERVER_COMMAND = ">>>>";
+	private static final String SERVER_COMMAND_PREFIX = ">>>>";
 	//#################################################
 
 	// COMMANDS FROM SERVER TO CLIENT (START WITH "<<")
-	public static final String GIVE_USERNAME = SERVER_COMMAND + "300";
+	public static final String GIVE_USERNAME = SERVER_COMMAND_PREFIX + "300";
 	
 	// SERVER COMMANDS THAT FORCE ALTERATION OF CLIENT (START WITH ">>>>");
 	
 	//public static final String FORCE_USERNAME = FORCE + "600_";
-	public static final String FORCE_DISCONNECT = SERVER_COMMAND + "601_";
+	public static final String FORCE_DISCONNECT = SERVER_COMMAND_PREFIX + "601_";
 	
 	// POSITIVE SERVER RESPONSES (START WITH ">>1")
 	/**
 	 * username is valid and not-taken
 	 */
-	public static final String VALID_USERNAME = SERVER_COMMAND + "100_";
+	public static final String VALID_USERNAME = SERVER_COMMAND_PREFIX + "100_";
 	/**
 	 * user is logged in
 	 */
-	public static final String LOGGED_IN = SERVER_COMMAND + "101_";
+	public static final String LOGGED_IN = SERVER_COMMAND_PREFIX + "101_";
 	/**
 	 * user is in a specific room
 	 */
-	public static final String IN_ROOM = SERVER_COMMAND + "102_";
+	public static final String IN_ROOM = SERVER_COMMAND_PREFIX + "102_";
 
 	// NEGATIVE SERVER RESPONSES (START WITH ">>0")
 	/**
 	 * username is invalid
 	 */
-	public static final String INVALID_USERNAME = SERVER_COMMAND + "000_";
+	public static final String INVALID_USERNAME = SERVER_COMMAND_PREFIX + "000_";
 	/**
 	 * username is already taken
 	 */
-	public static final String USERNAME_TAKEN = SERVER_COMMAND + "001_";
+	public static final String USERNAME_TAKEN = SERVER_COMMAND_PREFIX + "001_";
 	/**
 	 * the server is already full
 	 */
-	public static final String SERVER_FULL = SERVER_COMMAND + "002_";
+	public static final String SERVER_FULL = SERVER_COMMAND_PREFIX + "002_";
 
 	// COMMANDS FROM CLIENT USER TO SERVER (START WITH "/")
 	/**
 	 * show the conditions for the login
 	 */
 	//public static final String CONDITIONS = "/conditions";
+	
+	
 	
 	/**
 	 * show a list of every usercommand
@@ -99,15 +101,15 @@ public final class Commands {
 	
 	public static final List<String> USER_COMMANDS = new ArrayList<>(Arrays.asList(
 			SHOW_COMMANDS + " (shows all commands)",
-			GOTO_ROOM + " <designated room> (go to designated room)",
-			WHISPER + " <user> (whisper to user)",
+			GOTO_ROOM + "<designated room> (go to designated room)",
+			WHISPER + "<user> (whisper to user)",
 			UN_WHISPER + " (talk to everyone in the room)",
 			USERS + " (shows all users in this room)",
 			QUIT + " (terminates the chat session)",
 			ROOMS + " (shows all rooms)"));
 	
 	public static final boolean messageAllowed(String message) {
-		return !(message.startsWith(SERVER_COMMAND)); //|| message.startsWith(RESPONSE) || message.startsWith(FORCE));
+		return !(message.startsWith(SERVER_COMMAND_PREFIX)); //|| message.startsWith(RESPONSE) || message.startsWith(FORCE));
 	}
 
 	

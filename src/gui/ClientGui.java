@@ -20,7 +20,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import mainClasses.ClientThread;
-import utils.Commands;
 
 public class ClientGui extends JFrame {
 

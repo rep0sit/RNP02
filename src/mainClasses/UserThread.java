@@ -159,29 +159,28 @@ class UserThread extends AbstractWriteThread {
 					writeList(log);
 					super.write("###########################################################");
 				}
-				else if(inc.equals(Commands.QUIT)){
-					//close socket and streams	
-					super.write("User: "+name+" quit session.");
+				else if (inc.equals(Commands.QUIT)) {
+					// close socket and streams
+					super.write("User: " + name + " quit session.");
 					users.remove(this);
-					String str = "User "+name+" left this room.";
-					//write to other users that user "name" left room
+					String str = "User " + name + " left this room.";
+					// write to other users that user "name" left room
 					ServerThread.addToLog(str);
-					for(UserThread u : users) {
-						if(u.getRoom().equals(room)) {
-							
+					for (UserThread u : users) {
+						if (u.getRoom().equals(room)) {
+
 							u.write(str);
 						}
 					}
-					if(serverGui != null){
-						serverGui.writeToConsole("User "+this.name+" left chat.");
-					}else{
-						System.out.println("User "+this.name+" left chat.");
+					if (serverGui != null) {
+						serverGui.writeToConsole("User " + this.name + " left chat.");
+					} else {
+						System.out.println("User " + this.name + " left chat.");
 					}
 					close();
 				}
 				// Write to every user in room
-				else if(inc != null && !inc.equals("") && Commands.messageAllowed(inc)) {
-					
+				else if (inc != null && !inc.equals("") && Commands.messageAllowed(inc)) {
 					
 					String toWrite = "[" + room + "] " + name + ": " + inc;
 					
