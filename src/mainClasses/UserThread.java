@@ -33,6 +33,7 @@ class UserThread extends AbstractWriteThread {
 	public UserThread(String userName, Socket socket, List<UserThread> users2, ServerGui serverGui) {
 		this(userName, socket, users2);
 		this.serverGui = serverGui;
+		
 	}
 
 	private void init() {
@@ -45,8 +46,6 @@ class UserThread extends AbstractWriteThread {
 		}
 		
 	}
-	
-
 	
 	public String getUserName() {
 		return name;
