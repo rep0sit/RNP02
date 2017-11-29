@@ -58,6 +58,8 @@ public final class ServerThread extends AbstractClientServerThread{
 		this(Constants.SERVER_STANDARD_PORT);
 	}
 	
+	
+	
 	public void disconnect() {
 		System.exit(-1);
 		closed = true;

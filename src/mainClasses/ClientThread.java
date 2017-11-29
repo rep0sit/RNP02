@@ -21,7 +21,7 @@ import utils.Constants;
  */
 public final class ClientThread extends AbstractClientServerThread {
 
-	private String serverIp;
+	//private String serverIp;
 	private String name;
 	private InetAddress inetAddress;
 	
@@ -29,14 +29,14 @@ public final class ClientThread extends AbstractClientServerThread {
 	
 
 	// state
-	private boolean loggedIn = false;
+	//private boolean loggedIn = false;
 	
 	
 	private int timeout = Constants.TIMEOUT_5SEC;
 	
 	public ClientThread(String name, String serverIp, int port) {
 		this.name = name;
-		this.serverIp = serverIp;
+		//this.serverIp = serverIp;
 		this.port = port;
 		try {
 			this.inetAddress = InetAddress.getByName(serverIp);
@@ -164,7 +164,7 @@ public final class ClientThread extends AbstractClientServerThread {
 
 				// positive server responses
 				else if (currentLine.startsWith(Commands.LOGGED_IN)) {
-					loggedIn = true;
+					//loggedIn = true;
 					selfMessageResponse(Commands.LOGGED_IN, "you are logged in now", currentLine);
 				}
 

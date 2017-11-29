@@ -19,6 +19,10 @@ import mainClasses.ServerThread;
  */
 public class ServerGui extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4436943265117790657L;
 	private JTextArea textArea;
 	private ServerThread serverThread;
 	
