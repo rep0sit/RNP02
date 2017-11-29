@@ -11,7 +11,7 @@ public final class Constants {
 	
 	public static final int MAX_CLIENT_THREADS = 50;
 	
-	public static final int USERNAME_MIN_LEN = 3;
+	public static final int USERNAME_MIN_LEN = 2;
 	public static final int USERNAME_MAX_LEN = 15;
 	
 	public static final int MAX_NAME_ATTEMPTS = 5;
