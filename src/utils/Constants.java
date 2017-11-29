@@ -20,10 +20,7 @@ public final class Constants {
 	
 	public static final int MAX_NAME_ATTEMPTS = 5;
 	
-	//Rooms
 	
-
-
 	
 	
 	

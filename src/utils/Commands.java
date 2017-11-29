@@ -87,6 +87,8 @@ public final class Commands {
 	 */
 	public static final String ROOMS = "/rooms";
 	
+	public static final String ADD_ROOM = "/addroom ";
+	
 	public static final String LOG = "/log";
 	/**
 	 * quit the chat session and terminates all streams and socket connection
@@ -105,6 +107,7 @@ public final class Commands {
 			WHISPER + "<user> (whisper to user)",
 			UN_WHISPER + " (talk to everyone in the room)",
 			USERS + " (shows all users in this room)",
+			ADD_ROOM + "<name> (adds the room <name>)",
 			QUIT + " (terminates the chat session)",
 			ROOMS + " (shows all rooms)"));
 	

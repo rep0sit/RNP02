@@ -30,8 +30,8 @@ class UserThread extends AbstractWriteThread {
 		start();
 	}
 
-	public UserThread(String userName, Socket socket, List<UserThread> users2, ServerGui serverGui) {
-		this(userName, socket, users2);
+	public UserThread(String userName, Socket socket, List<UserThread> users, ServerGui serverGui) {
+		this(userName, socket, users);
 		this.serverGui = serverGui;
 		
 	}
@@ -113,12 +113,23 @@ class UserThread extends AbstractWriteThread {
 						super.write("You are in the room " + designatedRoom +" now.");
 						setRoom(designatedRoom);
 						whisper = false;
-						if(serverGui != null){
-							serverGui.writeToConsole("User "+this.name+" switched to room: "+designatedRoom);
-						}
+//						if(serverGui != null){
+//							serverGui.writeToConsole("User "+this.name+" switched to room: "+designatedRoom);
+//						}
 					}
 					else {
 						super.write("The room " + designatedRoom + " does not exist!");
+					}
+				}
+				
+				
+				else if(inc.startsWith(Commands.ADD_ROOM)) {
+					String roomName = getOptionalMessage(Commands.ADD_ROOM, inc);
+					
+					if (ServerThread.addRoom(roomName)) {
+						super.write("Room " + roomName + " created.");
+					}else {
+						super.write("Room " + roomName + " already exists.");
 					}
 				}
 				

@@ -15,13 +15,13 @@ import utils.Constants;
 
 public final class ServerThread extends AbstractClientServerThread{
 	
-	public static final String LOBBY = "lobby";
-	public static final String MUSIC = "music";
-	public static final String GOSSIP = "gossip";
+	static final String LOBBY = "lobby";
+	static final String MUSIC = "music";
+	static final String GOSSIP = "gossip";
 	
 	
-	public static List<String> rooms = new ArrayList<>(Arrays.asList(LOBBY, MUSIC, GOSSIP));
-	public static List<String> completeLog = new ArrayList<>();
+	static List<String> rooms = new ArrayList<>(Arrays.asList(LOBBY, MUSIC, GOSSIP));
+	static List<String> completeLog = new ArrayList<>();
 	
 	//private List<String> userNames = new ArrayList<>();
 	private List<UserThread> users = new ArrayList<>();
@@ -85,7 +85,21 @@ public final class ServerThread extends AbstractClientServerThread{
 		}
 		System.out.println("################################");
 	}
-	
+	/**
+	 * This method adds a new room and returs true if it doesn't exit yet.
+	 * If the room already exists, this method returns false.
+	 * @param room the name of the new room
+	 * @return true, if the room don't exists already, false else.
+	 */
+	static synchronized boolean addRoom(String room) {
+		boolean contains = rooms.contains(room);
+		
+		if(!contains) {
+			rooms.add(room);
+		}
+		return !contains;
+		
+	}
 	
 	@Override
 	public void run() {
