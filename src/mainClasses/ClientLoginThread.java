@@ -83,7 +83,7 @@ final class ClientLoginThread extends AbstractWriteThread {
 			else if(!Helpers.validateName(givenName)) {
 				write(Commands.INVALID_USERNAME + "Username must be between " + 
 						Constants.USERNAME_MIN_LEN + " and " + Constants.USERNAME_MAX_LEN + 
-						" characters long.");
+						" characters long and must contain only letters from a-z/A-Z or/and numbers from 0-9.");
 			}
 			else {
 				ret = givenName;
