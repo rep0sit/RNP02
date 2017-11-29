@@ -64,7 +64,7 @@ final class ClientLoginThread extends AbstractWriteThread {
 				givenName = br.readLine();
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println("User interrupted login attempt.");
 				e.printStackTrace();
 			}
 			
@@ -130,7 +130,7 @@ final class ClientLoginThread extends AbstractWriteThread {
 				
 //				write("User "+userName+" logged in.");
 				
-				System.out.println("User "+userName+" logged in.");
+				System.out.println("User " + userName + " logged in.");
 				
 				write(Commands.LOGGED_IN);
 				write("####################################################");
