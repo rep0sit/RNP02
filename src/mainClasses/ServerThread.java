@@ -30,12 +30,18 @@ public final class ServerThread extends AbstractClientServerThread{
 	
 	private ServerSocket serverSocket;
 	
-	private ServerGui serverGui;
+	private ServerGui serverGui = null;
+	
+	
 	
 	public ServerThread(int port) {
 		this.port = port;
 		try {
 			this.serverSocket = new ServerSocket(port);
+			
+			/*
+			 * if gui != null br von gui
+			 */
 			br = new BufferedReader(new InputStreamReader(System.in));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -46,22 +52,26 @@ public final class ServerThread extends AbstractClientServerThread{
 	public ServerThread(ServerGui gui){
 		this(Constants.SERVER_STANDARD_PORT);
 		serverGui = gui;
-		serverGui.writeToConsole("Server is running on port "+Constants.SERVER_STANDARD_PORT);
+		serverGui.writeToConsole("Server is running on port " + Constants.SERVER_STANDARD_PORT);
 	}
 	public ServerThread() {
 		this(Constants.SERVER_STANDARD_PORT);
 	}
 	
 	public void disconnect() {
+		System.exit(-1);
+		closed = true;
 		try {
 			br.close();
 			serverSocket.close();
 			serverGui.dispose();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.exit(-1);
+		
+		
 	}
 	
 	static synchronized void addToLog(String message) {
@@ -80,8 +90,10 @@ public final class ServerThread extends AbstractClientServerThread{
 	@Override
 	public void run() {
 		selfMessage("Server running on port ", Integer.toString(port));
-		new ConsoleReader();
-		while(!terminated) {
+		
+		
+		while(!closed) {
+			new ConsoleReader();
 			try {
 				socket = serverSocket.accept();
 				selfMessage("Login Attempt: ", "IP = ", socket.getInetAddress().toString());
@@ -124,16 +136,20 @@ public final class ServerThread extends AbstractClientServerThread{
 			this.setDaemon(true);
 			start();
 		}
+		
 		@Override
 		public void run() {
 			String command = "";
-			while(true) {
+			while(!closed) {
 				try {
+					/*
+					 * br liest von System.in
+					 */
 					command = br.readLine();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				if(command.equals(Commands.STOP)) {
+				if(command.equals(Commands.STOP) || command.equals(Commands.QUIT)) {
 					disconnect();
 				}
 				
@@ -141,7 +157,7 @@ public final class ServerThread extends AbstractClientServerThread{
 					String user = command.substring(Commands.KICK_USER.length());
 					for(UserThread u : users) {
 						if (u.getUserName().equals(user)) {
-							u.kick();
+							u.close();
 							users.remove(u);
 							serverGui.writeToConsole("User "+u.getName()+" was kicked.");
 						}
@@ -159,9 +175,7 @@ public final class ServerThread extends AbstractClientServerThread{
 					}
 					selfMessage(sb.toString());
 				}
-				else if(command.equals(Commands.QUIT)){
-					disconnect();
-				}
+				
 			}
 		}
 	}

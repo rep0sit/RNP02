@@ -133,24 +133,15 @@ public final class ClientThread extends AbstractClientServerThread {
 		boolean invalidName = false;
 		System.out.println("ClientThread is running now.");
 		try {
-			while (!terminated && (currentLine = br.readLine()) != null) {
+			while (!closed && (currentLine = br.readLine()) != null) {
 				// server commands
 				if (currentLine.equals(Commands.GIVE_USERNAME)) {
 					write(name);
 				}
-				
-				// forced state-alterating commands
-//				else if(currentLine.startsWith(Commands.FORCE_USERNAME)) {
-//					if(currentLine.length() > Commands.FORCE_USERNAME.length()) {
-//						String userName = currentLine.substring(Commands.FORCE_USERNAME.length());
-//						this.name = userName;
-//						selfMessage("Username was changed to ", userName);
-//					}
-//				}
 				else if(currentLine.startsWith(Commands.FORCE_DISCONNECT)) {
 					//selfMessage("You were kicked from server.");
 					selfMessageResponse(Commands.FORCE_DISCONNECT, "kicked from server", currentLine);
-					terminate();
+					close();
 					gui.dispose();
 					break;
 				}
@@ -166,7 +157,7 @@ public final class ClientThread extends AbstractClientServerThread {
 				} 
 				else if (currentLine.startsWith(Commands.SERVER_FULL)) {
 					selfMessageResponse(Commands.SERVER_FULL, "server already full", currentLine);
-					terminate();
+					close();
 					break;
 				}
 
@@ -195,7 +186,9 @@ public final class ClientThread extends AbstractClientServerThread {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			
+			System.out.println("Server does not respond anymore!");
 		}
 	}
 	
@@ -212,12 +205,7 @@ public final class ClientThread extends AbstractClientServerThread {
 			
 		}
 		
-		
-		
-		
 	}
 
 	
-	
-
 }

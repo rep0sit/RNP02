@@ -87,7 +87,7 @@ public ClientGui(String name, String address, int port) {
 			public void windowClosing(WindowEvent windowEvent){
 
 				dispose();
-				client.terminate();
+				client.close();
 				
 			}
 		});

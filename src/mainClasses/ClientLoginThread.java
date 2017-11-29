@@ -54,7 +54,6 @@ final class ClientLoginThread extends AbstractWriteThread {
 		
 		boolean firstAttempt = true;
 		for(int i = 1; i <= Constants.MAX_NAME_ATTEMPTS; i++ ) {
-			
 			if(firstAttempt) {
 				write(Commands.GIVE_USERNAME);
 				firstAttempt = false;
@@ -73,6 +72,8 @@ final class ClientLoginThread extends AbstractWriteThread {
 			for(UserThread u : users) {
 				if(u.getUserName().equals(givenName)) {
 					taken = true;
+				}else{
+					taken = false;
 				}
 			}
 			
@@ -102,8 +103,10 @@ final class ClientLoginThread extends AbstractWriteThread {
 		if (userName == null) {
 			write(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
 					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
+			if(serverGui != null){
 			serverGui.writeToConsole(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
 					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
+			}
 			try {
 				socket.close();
 			} catch (IOException e) {
@@ -121,7 +124,11 @@ final class ClientLoginThread extends AbstractWriteThread {
 				
 //				users.add(new UserThread(userName, socket, users));
 				users.add(new UserThread(userName, socket, users, serverGui));
-				serverGui.writeToConsole("User "+userName+" has joined the chat");
+				if(serverGui != null){
+					serverGui.writeToConsole("User "+userName+" has joined the chat");
+				}
+				
+				write("User "+userName+" logged in.");
 				
 				write(Commands.LOGGED_IN);
 				write("####################################################");

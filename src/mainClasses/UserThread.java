@@ -16,7 +16,7 @@ class UserThread extends AbstractWriteThread {
 	private String room;
 	private List<UserThread> users;
 	private List<String> log = new ArrayList<>();
-	private boolean kicked = false;
+	private boolean closed = false;
 	
 	private ServerGui serverGui;
 	
@@ -60,11 +60,6 @@ class UserThread extends AbstractWriteThread {
 		this.room = room;
 	}
 	
-	public void kick() {
-		kicked = true;
-		write(Commands.FORCE_DISCONNECT);
-	}
-	
 	@Override
 	public synchronized void write(String message) {
 		log.add(message);
@@ -102,7 +97,7 @@ class UserThread extends AbstractWriteThread {
 		
 		UserThread whisperToUser = null;
 		try {
-			while(!kicked && (inc = br.readLine()) != null) {
+			while(!closed && (inc = br.readLine()) != null) {
 				
 				
 				
@@ -118,7 +113,9 @@ class UserThread extends AbstractWriteThread {
 						super.write("You are in the room " + designatedRoom +" now.");
 						setRoom(designatedRoom);
 						whisper = false;
-						serverGui.writeToConsole("User "+this.name+" switched to room: "+designatedRoom);
+						if(serverGui != null){
+							serverGui.writeToConsole("User "+this.name+" switched to room: "+designatedRoom);
+						}
 					}
 					else {
 						super.write("The room " + designatedRoom + " does not exist!");
@@ -163,7 +160,6 @@ class UserThread extends AbstractWriteThread {
 					super.write("###########################################################");
 				}
 				else if(inc.equals(Commands.QUIT)){
-//					kick();
 					//close socket and streams	
 					super.write("User: "+name+" quit session.");
 					users.remove(this);
@@ -176,8 +172,10 @@ class UserThread extends AbstractWriteThread {
 							u.write(str);
 						}
 					}
-					serverGui.writeToConsole("User "+this.name+" left chat.");
-					quit();
+					if(serverGui != null){
+						serverGui.writeToConsole("User "+this.name+" left chat.");
+					}
+					close();
 				}
 				// Write to every user in room
 				else if(inc != null && !inc.equals("") && Commands.messageAllowed(inc)) {
@@ -202,21 +200,13 @@ class UserThread extends AbstractWriteThread {
 						whisperToUser.write(toWrite);
 						write(toWrite);
 					}
-					
-					
-					
-				}
-				
-				
-				
-				
+				}	
 			}
 			
 		} catch (IOException e) {
 			try {
 				socket.close();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			users.remove(this);
@@ -224,15 +214,14 @@ class UserThread extends AbstractWriteThread {
 		}
 	}
 
-	private void quit() {
+	public void close() {
 		try {
-			kicked = true;
+			closed = true;
 			write(Commands.FORCE_DISCONNECT);
 			br.close();
-			pw.close(); //wird hier gar nciht genutzt
+			pw.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

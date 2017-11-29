@@ -90,6 +90,7 @@ public final class Commands {
 	public static final String QUIT = "/quit";
 	
 	// SERVER ADMIN BEFEHLE
+	
 	public static final String STOP = "/stop";
 	
 	public static final String KICK_USER = "/kick ";
