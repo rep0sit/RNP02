@@ -104,7 +104,7 @@ final class ClientLoginThread extends AbstractWriteThread {
 			write(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
 					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
 			if(serverGui != null){
-			serverGui.writeToConsole(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
+				serverGui.writeToConsole(Commands.FORCE_DISCONNECT + "you entered an invalid username for "
 					+ Integer.toString(Constants.MAX_NAME_ATTEMPTS) + " times.");
 			}
 			try {
@@ -128,7 +128,9 @@ final class ClientLoginThread extends AbstractWriteThread {
 					serverGui.writeToConsole("User "+userName+" has joined the chat");
 				}
 				
-				write("User "+userName+" logged in.");
+//				write("User "+userName+" logged in.");
+				
+				System.out.println("User "+userName+" logged in.");
 				
 				write(Commands.LOGGED_IN);
 				write("####################################################");
