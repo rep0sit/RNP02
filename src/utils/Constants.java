@@ -16,7 +16,7 @@ public final class Constants {
 	
 	public static final int MAX_NAME_ATTEMPTS = 5;
 	
-	public static String nameRegex = "[a-zA-Z0-9]";
+	public static String nameRegex = "[a-zA-Z0-9]+";
 	
 	
 	

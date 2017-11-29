@@ -172,7 +172,7 @@ class UserThread extends AbstractWriteThread {
 				}
 				else if (inc.equals(Commands.QUIT)) {
 					// close socket and streams
-					super.write("User: " + name + " quit session.");
+					super.write("User " + name + " disconnected.");
 					users.remove(this);
 					String str = "User " + name + " left this room.";
 					// write to other users that user "name" left room
