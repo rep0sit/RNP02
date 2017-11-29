@@ -16,15 +16,15 @@ public final class Commands {
 	private static final String SERVER_COMMAND_PREFIX = ">>>>";
 	//#################################################
 
-	// COMMANDS FROM SERVER TO CLIENT (START WITH "<<")
+	// COMMANDS FROM SERVER TO CLIENT 
 	public static final String GIVE_USERNAME = SERVER_COMMAND_PREFIX + "300";
 	
-	// SERVER COMMANDS THAT FORCE ALTERATION OF CLIENT (START WITH ">>>>");
+	// SERVER COMMANDS THAT FORCE ALTERATION OF CLIENT 
 	
 	//public static final String FORCE_USERNAME = FORCE + "600_";
 	public static final String FORCE_DISCONNECT = SERVER_COMMAND_PREFIX + "601_";
 	
-	// POSITIVE SERVER RESPONSES (START WITH ">>1")
+	// POSITIVE SERVER RESPONSES 
 	/**
 	 * username is valid and not-taken
 	 */
@@ -38,7 +38,7 @@ public final class Commands {
 	 */
 	public static final String IN_ROOM = SERVER_COMMAND_PREFIX + "102_";
 
-	// NEGATIVE SERVER RESPONSES (START WITH ">>0")
+	// NEGATIVE SERVER RESPONSES 
 	/**
 	 * username is invalid
 	 */
@@ -56,9 +56,6 @@ public final class Commands {
 	/**
 	 * show the conditions for the login
 	 */
-	//public static final String CONDITIONS = "/conditions";
-	
-	
 	
 	/**
 	 * show a list of every usercommand
@@ -98,7 +95,7 @@ public final class Commands {
 	 */
 	public static final String QUIT = "/quit";
 	
-	// SERVER ADMIN BEFEHLE
+	// ADDITIONAL SERVER ADMIN BEFEHLE
 	
 	public static final String STOP = "/stop";
 	
