@@ -2,6 +2,8 @@ package mainClasses;
 
 import java.io.IOException;
 
+import utils.Commands;
+
 abstract class AbstractClientServerThread extends AbstractWriteThread {
 	
 	protected boolean closed = false;
@@ -29,7 +31,7 @@ abstract class AbstractClientServerThread extends AbstractWriteThread {
 		closed = true;
 		
 		try {
-	
+			write(Commands.QUIT);
 			br.close();
 			pw.close();
 		} catch (IOException e) {

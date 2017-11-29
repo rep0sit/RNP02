@@ -158,6 +158,7 @@ public final class ClientThread extends AbstractClientServerThread {
 				else if (currentLine.startsWith(Commands.SERVER_FULL)) {
 					selfMessageResponse(Commands.SERVER_FULL, "server already full", currentLine);
 					close();
+					gui.dispose();
 					break;
 				}
 

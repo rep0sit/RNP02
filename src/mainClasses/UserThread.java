@@ -72,6 +72,7 @@ class UserThread extends AbstractWriteThread {
 			sb.append(s.toString());
 			i++;
 			if(i < list.size()) {
+//				sb.append("[").append(s).append("]");
 				sb.append("\n");
 			}
 		}
@@ -173,6 +174,8 @@ class UserThread extends AbstractWriteThread {
 					}
 					if(serverGui != null){
 						serverGui.writeToConsole("User "+this.name+" left chat.");
+					}else{
+						System.out.println("User "+this.name+" left chat.");
 					}
 					close();
 				}

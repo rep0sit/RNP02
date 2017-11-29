@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import mainClasses.ClientThread;
+import utils.Commands;
 
 public class ClientGui extends JFrame {
 
@@ -85,10 +86,10 @@ public ClientGui(String name, String address, int port) {
 		addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent windowEvent){
-
-				dispose();
-				client.close();
 				
+				dispose();
+//				client.write(Commands.QUIT);
+				client.close();
 			}
 		});
 		//setLocationRelativeTo(null);
