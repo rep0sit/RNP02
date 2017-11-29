@@ -8,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.InetAddress;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,13 +30,13 @@ public class ClientGui extends JFrame {
 	private JTextArea txtrHistory;
 	
 	private JPanel contentPane;
-	private String name, address;
-	private int port;
+	//private String name, address;
+	//private int port;
 	private JTextField txtMessage;
 	
 	
 	
-	private InetAddress ip;
+	//private InetAddress ip;
 
 	private ClientThread client;
 	
@@ -52,9 +51,9 @@ public class ClientGui extends JFrame {
 public ClientGui(String name, String address, int port) {
 		setTitle("Client");
 		
-		this.name = name;
-		this.address = address;
-		this.port = port;
+//		this.name = name;
+//		this.address = address;
+//		this.port = port;
 		
 		createWindow();
 		
